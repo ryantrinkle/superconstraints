@@ -5,7 +5,7 @@ license:       BSD3
 license-file:  LICENSE
 cabal-version: >= 1.10
 author:        Ryan Trinkle
-maintainer:    Ryan Trinkle <ryan.trinkle@gmail.com
+maintainer:    Ryan Trinkle <ryan.trinkle@gmail.com>
 stability:     experimental
 homepage:      http://github.com/ryantrinkle/superconstraints
 bug-reports:   http://github.com/ryantrinkle/superconstraints/issues
@@ -17,7 +17,7 @@ extra-source-files: README.markdown
 
 source-repository head
   type: git
-  location: git://github.com/ryantrinkle/superconstraints.git
+  location: https://github.com/ryantrinkle/superconstraints
 
 library
   hs-source-dirs: src
