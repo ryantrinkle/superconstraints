@@ -1,6 +1,6 @@
 name:          superconstraints
 category:      Constraints
-version:       0.0.1
+version:       0.0.2
 license:       BSD3
 license-file:  LICENSE
 cabal-version: >= 1.10
