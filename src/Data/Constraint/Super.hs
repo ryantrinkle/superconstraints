@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeFamilies, ConstraintKinds, Rank2Types, TypeOperators, ScopedTypeVariables, GADTs, TemplateHaskell, LambdaCase #-}
+{-# LANGUAGE TypeFamilies, ConstraintKinds, Rank2Types, TypeOperators, ScopedTypeVariables, GADTs, TemplateHaskell, LambdaCase, UndecidableInstances, UndecidableSuperClasses #-}
 module Data.Constraint.Super where
 
 import Data.Proxy (Proxy)
@@ -14,10 +14,13 @@ import Language.Haskell.Meta.Parse (parseType)
 
 import Language.Haskell.TH.Syntax hiding (lift)
 
-class HasSuper c where
+class Super c => HasSuper (c :: Constraint) where
   type Super c :: Constraint
   instantiate :: HasSuper c :- c
-  super :: Proxy c -> Dict (Super c)
+
+{-# DEPRECATED super "super is no longer necessary; the superclasses of a class with HasSuper are now always available" #-}
+super :: HasSuper c => Proxy c -> Dict (Super c)
+super _ = Dict
 
 normalizeInstanceHead :: Type -> Q Type
 normalizeInstanceHead t = do
@@ -64,7 +67,6 @@ makeSuper tStr = case parseType tStr of
               [InstanceD _ cxt t2 _] -> return
                 [InstanceD Nothing cxt (AppT (ConT ''HasSuper) t2)
                   [ TySynInstD ''Super $ TySynEqn [t2] $ foldl AppT (TupleT $ length cxt) cxt
-                  , FunD 'super [Clause [WildP] (NormalB (ConE 'Dict)) []]
                   , FunD 'instantiate [Clause [] (NormalB (AppE (ConE 'Sub) (ConE 'Dict))) []]
                   ]
                 ]
